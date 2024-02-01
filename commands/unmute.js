@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
     name: 'unmute',
     description: 'Desmutea a un usuario',
@@ -8,28 +10,52 @@ module.exports = {
                 .then(async member => {
                     let role = message.guild.roles.cache.find(role => role.name === "Muted");
                     if (!role) {
-                        return message.reply("No se encontró el rol 'Muted'");
+                        const embed = new Discord.MessageEmbed()
+                            .setColor('#FF0000')
+                            .setTitle('Error')
+                            .setDescription("No se encontró el rol 'Muted'");
+                        return message.reply({ embeds: [embed] });
                     }
 
                     if (!member.roles.cache.has(role.id)) {
-                        return message.reply("Este usuario no está silenciado");
+                        const embed = new Discord.MessageEmbed()
+                            .setColor('#FF0000')
+                            .setTitle('Error')
+                            .setDescription("Este usuario no está silenciado");
+                        return message.reply({ embeds: [embed] });
                     }
 
                     await member.roles.remove(role)
                         .then(() => {
-                            message.reply(`Se ha desmuteado a ${userToUnmute.tag} con éxito`);
+                            const embed = new Discord.MessageEmbed()
+                                .setColor('#00FF00')
+                                .setTitle('Unmute')
+                                .setDescription(`Se ha desmuteado a ${userToUnmute.tag} con éxito`);
+                            message.reply({ embeds: [embed] });
                         })
                         .catch(err => {
-                            message.reply('No pude desmutear al miembro');
+                            const embed = new Discord.MessageEmbed()
+                                .setColor('#FF0000')
+                                .setTitle('Error')
+                                .setDescription('No pude desmutear al miembro');
+                            message.reply({ embeds: [embed] });
                             console.error(err);
                         });
                 })
                 .catch(err => {
-                    message.reply("¡Ese usuario no está en este servidor!");
+                    const embed = new Discord.MessageEmbed()
+                        .setColor('#FF0000')
+                        .setTitle('Error')
+                        .setDescription('¡Ese usuario no está en este servidor!');
+                    message.reply({ embeds: [embed] });
                     console.error(err);
                 });
         } else {
-            message.reply("¡No mencionaste al usuario para desmutear!");
+            const embed = new Discord.MessageEmbed()
+                .setColor('#FF0000')
+                .setTitle('Error')
+                .setDescription('¡No mencionaste al usuario para desmutear!');
+            message.reply({ embeds: [embed] });
         }
     },
 };

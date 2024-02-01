@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
     name: 'kick',
     description: 'Expulsa a un usuario',
@@ -9,17 +11,33 @@ module.exports = {
                 member
                     .kick('Optional reason that will display in the audit logs')
                     .then(() => {
-                        message.reply(`Se ha expulsado a ${userToKick.tag} con éxito`);
+                        const embed = new Discord.MessageEmbed()
+                            .setColor('#00FF00')
+                            .setTitle('Kick')
+                            .setDescription(`Se ha expulsado a ${userToKick.tag} con éxito`);
+                        message.reply({ embeds: [embed] });
                     })
                     .catch(err => {
-                        message.reply('No pude expulsar al miembro');
+                        const embed = new Discord.MessageEmbed()
+                            .setColor('#FF0000')
+                            .setTitle('Error')
+                            .setDescription('No pude expulsar al miembro');
+                        message.reply({ embeds: [embed] });
                         console.error(err);
                     });
             } else {
-                message.reply("¡Ese usuario no está en este servidor!");
+                const embed = new Discord.MessageEmbed()
+                    .setColor('#FF0000')
+                    .setTitle('Error')
+                    .setDescription('¡Ese usuario no está en este servidor!');
+                message.reply({ embeds: [embed] });
             }
         } else {
-            message.reply("¡No mencionaste al usuario para expulsar!");
+            const embed = new Discord.MessageEmbed()
+                .setColor('#FF0000')
+                .setTitle('Error')
+                .setDescription('¡No mencionaste al usuario para expulsar!');
+            message.reply({ embeds: [embed] });
         }
     },
 };

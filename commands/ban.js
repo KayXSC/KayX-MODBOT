@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
     name: 'ban',
     description: 'Banea a un usuario',
@@ -9,17 +11,33 @@ module.exports = {
                 member
                     .ban('Optional reason that will display in the audit logs')
                     .then(() => {
-                        message.reply(`Se ha baneado a ${userToBan.tag} con éxito`);
+                        const embed = new Discord.MessageEmbed()
+                            .setColor('#00FF00')
+                            .setTitle('Ban')
+                            .setDescription(`Se ha baneado a ${userToBan.tag} con éxito`);
+                        message.reply({ embeds: [embed] });
                     })
                     .catch(err => {
-                        message.reply('No pude banear al miembro');
+                        const embed = new Discord.MessageEmbed()
+                            .setColor('#FF0000')
+                            .setTitle('Error')
+                            .setDescription('No pude banear al miembro');
+                        message.reply({ embeds: [embed] });
                         console.error(err);
                     });
             } else {
-                message.reply("¡Ese usuario no está en este servidor!");
+                const embed = new Discord.MessageEmbed()
+                    .setColor('#FF0000')
+                    .setTitle('Error')
+                    .setDescription('¡Ese usuario no está en este servidor!');
+                message.reply({ embeds: [embed] });
             }
         } else {
-            message.reply("¡No mencionaste al usuario para banear!");
+            const embed = new Discord.MessageEmbed()
+                .setColor('#FF0000')
+                .setTitle('Error')
+                .setDescription('¡No mencionaste al usuario para banear!');
+            message.reply({ embeds: [embed] });
         }
     },
 };

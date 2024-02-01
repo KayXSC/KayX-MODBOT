@@ -31,6 +31,11 @@ client.on('messageCreate', async message => {
 
     if (!client.commands.has(command)) return;
 
+    // Verificar si el autor del mensaje es un administrador
+    if (!message.member.permissions.has('ADMINISTRATOR')) {
+        return message.reply('¡No tienes permiso para usar este comando!');
+    }
+
     try {
         client.commands.get(command).execute(message, args);
     } catch (error) {

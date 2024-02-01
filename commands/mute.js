@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
     name: 'mute',
     description: 'Silencia a un usuario',
@@ -29,24 +31,44 @@ module.exports = {
                     }
 
                     if (member.roles.cache.has(role.id)) {
-                        return message.reply("Este usuario ya ha sido silenciado");
+                        const embed = new Discord.MessageEmbed()
+                            .setColor('#FF0000')
+                            .setTitle('Error')
+                            .setDescription("Este usuario ya ha sido silenciado");
+                        return message.reply({ embeds: [embed] });
                     }
 
                     await member.roles.add(role)
                         .then(() => {
-                            message.reply(`Se ha silenciado a ${userToMute.tag} con éxito`);
+                            const embed = new Discord.MessageEmbed()
+                                .setColor('#00FF00')
+                                .setTitle('Mute')
+                                .setDescription(`Se ha silenciado a ${userToMute.tag} con éxito`);
+                            message.reply({ embeds: [embed] });
                         })
                         .catch(err => {
-                            message.reply('No pude silenciar al miembro');
+                            const embed = new Discord.MessageEmbed()
+                                .setColor('#FF0000')
+                                .setTitle('Error')
+                                .setDescription('No pude silenciar al miembro');
+                            message.reply({ embeds: [embed] });
                             console.error(err);
                         });
                 })
                 .catch(err => {
-                    message.reply("¡Ese usuario no está en este servidor!");
+                    const embed = new Discord.MessageEmbed()
+                        .setColor('#FF0000')
+                        .setTitle('Error')
+                        .setDescription('¡Ese usuario no está en este servidor!');
+                    message.reply({ embeds: [embed] });
                     console.error(err);
                 });
         } else {
-            message.reply("¡No mencionaste al usuario para silenciar!");
+            const embed = new Discord.MessageEmbed()
+                .setColor('#FF0000')
+                .setTitle('Error')
+                .setDescription('¡No mencionaste al usuario para silenciar!');
+            message.reply({ embeds: [embed] });
         }
     },
 };
